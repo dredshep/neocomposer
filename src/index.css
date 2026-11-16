@@ -1,5 +1,63 @@
+
+/* Theme palette; the canvas reads the same variables to draw grid lines. */
+:root {
+  color-scheme: dark;
+  --app-bg: #181c23;
+  --surface: #282f3a;
+  --surface-active: #414b5c;
+  --surface-hover: #394354;
+  --text: #ecf0f7;
+  --border: #697486;
+  --grid-strong: #728096;
+  --grid-beat: #4f5b6e;
+  --grid-faint: #343d4b;
+  --piano-white: #303945;
+  --piano-black: #1f2732;
+  --note-border: #10141b;
+  --note-selected: #7ab6ff;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --app-bg: #ffffff;
+  --surface: #ffffff;
+  --surface-active: #d6d6d6;
+  --surface-hover: #e8eeed;
+  --text: #111111;
+  --border: #1c1c1c;
+  --grid-strong: #111111;
+  --grid-beat: #b2bcc2;
+  --grid-faint: #ced8e0;
+  --piano-white: #ffffff;
+  --piano-black: #808080;
+  --note-border: #000000;
+  --note-selected: #004cff;
+}
+input, select, textarea, button {
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+input[type="range"], input[type="color"] { accent-color: #78b6f7; }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 4px 7px;
+  margin-left: 3px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.theme-toggle:hover { background: var(--surface-hover); }
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--note-selected);
+  outline-offset: 2px;
+}
+
 body {
-  background-color: white;
+  background-color: var(--app-bg);
+  color: var(--text);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

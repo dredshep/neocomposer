@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef } from "react";
-import { beatFromEvent, getRelativeBeatWidth, lightColor, mediumColor, MidiBeat, midiNoteFromEvent, MidiNoteNum, pianoRollBeats, pianoRollKeys, SubdivisionType, TimeSignature, veryLightColor } from "../consts";
+import { beatFromEvent, getRelativeBeatWidth, MidiBeat, midiNoteFromEvent, MidiNoteNum, pianoRollBeats, pianoRollKeys, SubdivisionType, TimeSignature } from "../consts";
 import styled from "styled-components";
 import { toMidi } from "../../smplr/smplr/midi";
 import { DebouncedState } from "use-debounce/dist/useDebouncedCallback";
@@ -59,6 +59,10 @@ export function CompositionGrid({
       const ctx = canvas.getContext("2d")!;
       ctx.imageSmoothingEnabled = false;
       ctx.lineWidth = 1;
+      const gridStyles = getComputedStyle(canvas);
+      const strongGridColor = gridStyles.getPropertyValue('--grid-strong').trim() || '#728096';
+      const beatGridColor = gridStyles.getPropertyValue('--grid-beat').trim() || '#4f5b6e';
+      const faintGridColor = gridStyles.getPropertyValue('--grid-faint').trim() || '#343d4b';
       const lineDash = [2, 2];
       const CANVAS_HALF_PIXEL_OFFSET = 0.5;
       // Draw the vertical lines
@@ -67,10 +71,10 @@ export function CompositionGrid({
         ctx.beginPath();
         ctx.setLineDash(idx % subdivision === 0 ? [] : lineDash);
         ctx.strokeStyle = idx % (subdivision * timeSignature) === 0
-          ? "black"
+          ? strongGridColor
           : idx % subdivision === 0 
-            ? mediumColor
-            : veryLightColor;
+            ? beatGridColor
+            : faintGridColor;
         const x = (beatWidth * idx) - CANVAS_HALF_PIXEL_OFFSET;
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
@@ -81,7 +85,7 @@ export function CompositionGrid({
         ctx.beginPath();
         const midiNote = pianoRollKeys[j];
         ctx.setLineDash(midiNote[0] === "C" ? [] : lineDash);
-        ctx.strokeStyle = midiNote[0] === "C" ? mediumColor : lightColor;
+        ctx.strokeStyle = midiNote[0] === "C" ? beatGridColor : faintGridColor;
         const y = ((_beatHeight-1) * (j+1)) - CANVAS_HALF_PIXEL_OFFSET;
         ctx.moveTo(0, y);
         ctx.lineTo(canvas.width, y);
@@ -105,11 +109,8 @@ export function CompositionGrid({
   ></canvas>, []);
   useEffect(() => {
     handleResize();
-    // Don't actually need this... Grid doesn't resize, will always stay same size inside the resizing scroller window.
-    // window.addEventListener("resize", handleResize);
-    // return () => {
-    //   window.removeEventListener("resize", handleResize);
-    // };
+    window.addEventListener('neocomposer-theme-change', handleResize);
+    return () => window.removeEventListener('neocomposer-theme-change', handleResize);
   }, [handleResize]);
   // -1. for some reason _beatHeight is set to 15 but the piano roll keys and grid uses 14.
   const beatHeight = _beatHeight - 1;

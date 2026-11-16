@@ -28,5 +28,5 @@ html {
 }
 
 .hoverable:hover {
-  background-color: #e8eeed;
+  background-color: var(--surface-hover);
 }

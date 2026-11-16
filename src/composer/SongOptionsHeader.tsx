@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components'
 import { renderOffline } from "../smplr/offline";
 import { SongSettingsContext } from './contexts/SongSettingsContextProvider';
@@ -21,11 +21,11 @@ import { CompositionContext } from './contexts/CompositionContextProvider';
 import { UndoRedoContext } from './contexts/UndoRedoContextProvider';
 
 const SongHeaderContainer = styled.div`
-  background-color: white;
+  background-color: var(--surface);
   height: 32px;
   display: flex;
   gap: 4px;
-  outline: 1px solid black;
+  outline: 1px solid var(--border);
   margin: 2px;
   align-items: center;
 `;
@@ -40,22 +40,22 @@ const DancingBabyImg = styled.img<{ $frame: number, $yFrame: number }>`
   cursor: pointer;
 `;
 const DivButton = styled.div`
-  background: white;
+  background: var(--surface);
   padding: 2px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
   cursor: pointer;
   user-select: none;
 `;
 const FileInputLabel = styled.label`
-  background: white;
+  background: var(--surface);
   padding: 2px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
   cursor: pointer;
 `;
 const ShuffleButton = styled.div`
-  background: white;
+  background: var(--surface);
   padding: 1px 2px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
   cursor: pointer;
   margin-left: 2px;
   margin-right: 4px;
@@ -426,6 +426,22 @@ export function SongOptionsHeader({footer}: {footer: React.ReactElement}) {
     }
   }, [handleLoadCompositionFromFileJson, handleLoadCompositionFromFileMidi, setSongName]);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return window.localStorage.getItem('neocomposer-theme') !== 'light';
+    } catch {
+      return true;
+    }
+  });
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    try {
+      window.localStorage.setItem('neocomposer-theme', isDarkMode ? 'dark' : 'light');
+    } catch {
+      // The toggle still works with browser storage disabled.
+    }
+    window.dispatchEvent(new Event('neocomposer-theme-change'));
+  }, [isDarkMode]);
 
   return (
     <>
@@ -473,16 +489,27 @@ export function SongOptionsHeader({footer}: {footer: React.ReactElement}) {
           }}>💾 Save</DivButton>
           <FileInputLabel htmlFor={`song-to-load`}>📂 Load</FileInputLabel>
           <DivButton onClick={() => {setIsSaveModalOpen((prev) => !prev);}} style={{
-            position: "relative", minWidth: "56px", userSelect: "none", background: isSaveModalOpen ? "lightgray" : "white", color: isSaveModalOpen ? "black" : "black",
+            position: "relative", minWidth: "56px", userSelect: "none", background: isSaveModalOpen ? "var(--surface-active)" : "var(--surface)", color: "var(--text)",
           }}>{isSaveModalOpen ? "🗑️ Cancel" : "📤 Export"}{isSaveModalOpen && (
             <>
-              <div style={{position: "absolute", display: "flex", flexDirection: "column", top: "23px", zIndex: 999, left: "-1px", width: "82px", gap: "1px", textAlign: "left", color: "black"}}>
+              <div style={{position: "absolute", display: "flex", flexDirection: "column", top: "23px", zIndex: 999, left: "-1px", width: "82px", gap: "1px", textAlign: "left", color: "var(--text)"}}>
                 <DivButton onClick={handleSaveCompositionToMidiFile} style={{ padding: 2 }}>as 🎼 MIDI </DivButton>
                 <DivButton onClick={handleExportSongToWav} style={{ padding: 2 }}>as 🔊 WAV</DivButton>
                 <DivButton onClick={handleExportSongToMp3} style={{ padding: 2 }}>as 💽 MP3</DivButton>
               </div>
             </>)}</DivButton>
           <input id={`song-to-load`} type="file" accept=".mid,.json" onChange={onLoadSongFile} style={{ display: 'none' }} />
+          <button
+            type="button"
+            className="theme-toggle"
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            aria-pressed={isDarkMode}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={() => setIsDarkMode(value => !value)}
+            onKeyDown={event => event.stopPropagation()}
+          >
+            {isDarkMode ? "☀️ Light" : "🌙 Dark"}
+          </button>
         </ActionButtonsContainer>
       </SongHeaderContainer>
     </>

@@ -25,7 +25,7 @@ export const ActionButton = styled.div`
 `;
 
 const PixelActionButton = styled(ActionButton)`
-  border: 1px solid black;
+  border: 1px solid var(--border);
   padding-right: 1px;
 `;
 
@@ -122,7 +122,7 @@ function InputDefaultButton({
   const containerStyle = useMemo(() => ({
     paddingBottom: 4,
     paddingTop: 1,
-    ...(_inputMode === InputMode.DEFAULT ? { background: 'gray', cursor: 'unset', } : {}),
+    ...(_inputMode === InputMode.DEFAULT ? { background: 'var(--surface-active)', cursor: 'unset', } : {}),
   } as CSSProperties), [_inputMode]);
 
   return (
@@ -150,7 +150,7 @@ function InputSelectionButton({
     paddingBottom: 3,
     paddingTop: 2,
     marginLeft: -6,
-    ...(_inputMode === InputMode.SELECT ? { background: 'gray', cursor: 'unset' } : {}),
+    ...(_inputMode === InputMode.SELECT ? { background: 'var(--surface-active)', cursor: 'unset' } : {}),
   } as CSSProperties), [_inputMode]);
   return (
     <PixelActionButton
@@ -177,7 +177,7 @@ function InputDeleteButton({
     paddingBottom: 3,
     paddingTop: 2,
     marginLeft: -6,
-    ...(_inputMode === InputMode.DELETE ? { background: 'gray', cursor: 'unset' } : {}),
+    ...(_inputMode === InputMode.DELETE ? { background: 'var(--surface-active)', cursor: 'unset' } : {}),
   } as CSSProperties), [_inputMode]);
   return (
     <PixelActionButton

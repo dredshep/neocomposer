@@ -52,7 +52,7 @@ const CompositionContainer = styled.div`
 const CompositionGridContainer = styled.div`
   overflow: auto;
   overscroll-behavior: contain;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid var(--border);
   width: calc(100% - 1px);
   margin-bottom: 2px;
   -webkit-tap-highlight-color: transparent;
@@ -69,7 +69,7 @@ const PianoRollKeysContainer = styled.div`
 const PianoRollKeysSubContainer = styled.div<{ $beatHeight: number }>`
   position: absolute;
   top: 16px;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--border);
 `;
 
 export function CompositionCanvas({
@@ -585,9 +585,9 @@ export function CompositionCanvas({
       position: 'absolute',
       top: -6,
       left: 10,
-      background: "white",
+      background: "var(--surface)",
       fontSize: 18,
-      border: '1px solid black',
+      border: '1px solid var(--border)',
       padding: '0px 2px 2px 2px',
       lineHeight: '14px',
       width: 12,
@@ -606,19 +606,19 @@ export function CompositionCanvas({
     textAlign: "right",
     userSelect: "none",
     cursor: 'pointer',
-    borderRight: '1px solid black',
-    borderBottom: '1px solid black',
+    borderRight: '1px solid var(--border)',
+    borderBottom: '1px solid var(--border)',
     height: _beatHeight - 2,
     fontSize: 12,
-    background: 'white',
-    color: 'black',
+    background: 'var(--piano-white)',
+    color: 'var(--text)',
   }), [_beatHeight]);
   const currUserInstrument = userInstrumentsRef.current[userInstrumentIndexRef.current];
   const pianoRollKeyStyle = useCallback((midiNote: string, isLast: boolean, isHeld: boolean) => ({
     ...pianoRollKeyBaseStyle,
     ...(midiNote[1] === 'b' ? {
-      background: 'gray',
-      color: 'white',
+      background: 'var(--piano-black)',
+      color: 'var(--text)',
     } : {}),
     ...(isHeld && currUserInstrument?.color ? {
       background: midiNote[1] === 'b' ? '#424141' : currUserInstrument?.color,

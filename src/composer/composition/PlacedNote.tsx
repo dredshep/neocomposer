@@ -29,11 +29,11 @@ const StyledNote = styled.div<{
       : zIndex_placedNote };
   border-radius: 0;
   box-shadow: ${({ $isClickedNote, $isNoteSelected }) => `0px 0px 0px ${
-    $isNoteSelected ? '1px blue' : '1px black'
+    $isNoteSelected ? '1px var(--note-selected)' : '1px var(--note-border)'
   }${
     $isNoteSelected
-      ? $isClickedNote ? '' : ', 2px 2px 0px 0px blue'
-      : $isClickedNote ? ', 2px 2px 0px 0px black' : ''
+      ? $isClickedNote ? '' : ', 2px 2px 0px 0px var(--note-selected)'
+      : $isClickedNote ? ', 2px 2px 0px 0px var(--note-border)' : ''
   }` };
   opacity: ${({ $visible }) => `${$visible ? '1.0' : '0.5'}`};
 `;

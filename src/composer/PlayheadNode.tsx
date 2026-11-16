@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PlayheadContext } from "./contexts/PlayheadContextProvider";
 import { CompositionContext } from "./contexts/CompositionContextProvider";
 import { TimeSignatureContext } from "./contexts/TimeSignatureContextProvider";
-import { AudioContextContext, beatFromEvent, getEndOfMeasureFromBeat, getEndOfMeasureToLoopAtBeat, getStartOfMeasureFromBeat, InputMode, InstrumentInstruction, mediumColor, NoteIdWithOffset, pianoRollBeats, pianoRollKeys, playCompositionNotesAtBeat, zIndex_playhead } from "./consts";
+import { AudioContextContext, beatFromEvent, getEndOfMeasureFromBeat, getEndOfMeasureToLoopAtBeat, getStartOfMeasureFromBeat, InputMode, InstrumentInstruction, NoteIdWithOffset, pianoRollBeats, pianoRollKeys, playCompositionNotesAtBeat, zIndex_playhead } from "./consts";
 import { SongSettingsContext } from "./contexts/SongSettingsContextProvider";
 import { UserInstrumentContext } from "./contexts/UserInstrumentContextProvider";
 import { PlayheadPosXContext } from "./contexts/PlayheadPosXContextProvider";
@@ -24,20 +24,20 @@ const PlayheadContainer = styled.div<{ $beatHeight: number }>`
 const PlayheadTopLeftCoverup = styled.div`
   width: 30px;
   height: 16px;
-  background: white;
+  background: var(--surface);
   position: absolute;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--border);
 `;
 
 const PlayheadStickyContainer = styled.div<{ $isMouseDown: boolean, $beatWidth: number }>`
   position: absolute;
-  background: white;
+  background: var(--surface);
   top: 0px;
   left: 30px;
   width: ${({ $beatWidth }) => `${(pianoRollBeats.length * $beatWidth)}px`};
   cursor: ${({ $isMouseDown }) => $isMouseDown ? 'grabbing' : 'pointer'};
   height: 16px;
-  border-bottom: 1px double ${mediumColor};
+  border-bottom: 1px double var(--grid-beat);
   z-index: ${zIndex_playhead};
   pointer-events: all;
 `;

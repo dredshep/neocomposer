@@ -15,14 +15,15 @@ const SoundfontHeader = styled.div<{ $color: string }>`
   height: 28px;
   display: flex;
   gap: 4px;
-  outline: 1px solid black;
+  outline: 1px solid var(--border);
   background-color: ${({ $color }) => $color};
+  color: #111827;
   margin: 2px;
   align-items: center;
   width: fit-content;
 `;
 const ColorPicker = styled.div`
-  border: 1px solid black;
+  border: 1px solid var(--border);
   width: 18px; 
   height: 18px;
   margin-left: 4px;
@@ -30,9 +31,10 @@ const ColorPicker = styled.div`
   position: relative;
 `;
 const FileInputLabel = styled.label`
-  background: white;
+  background: var(--surface);
+  color: var(--text);
   padding: 2px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
   cursor: pointer;
 `;
 const UserInstrumentSelector = styled.div`
@@ -48,20 +50,23 @@ const UserInstrumentTab = styled.div<{ $disabled: boolean }>`
   padding: 0 3px;
   height: 28px;
   line-height: 28px;
-  border: 1px solid black;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
   user-select: none;
   margin-left: 2px;
   margin-top: 1px;
   cursor: ${({ $disabled }) => $disabled ? "default" : "pointer"};
   &:hover {
-    border: ${({ $disabled }) => $disabled ? "1px solid black" : "1px inset #d7d5d5"};
+    border: ${({ $disabled }) => $disabled ? "1px solid var(--border)" : "1px inset var(--border)"};
   }
 `;
 
 const ShuffleButton = styled.div`
-  background: white;
+  background: var(--surface);
+  color: var(--text);
   padding: 1px 2px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
   cursor: pointer;
   margin-left: 2px;
   margin-right: 4px;
@@ -80,7 +85,7 @@ function UserInstrumentMuteButton({
     <div
       onClick={(e) => onUserInstrumentVisibilityToggle(e)}
       style={{
-        border: '1px solid black',
+        border: '1px solid var(--border)',
         position: 'relative',
         width: 20,
         height: 20,
@@ -322,7 +327,8 @@ export function UserInstrumentsHeader() {
       key={`${userInstrument?.name}-${index}`}
       style={{
         backgroundColor: userInstrument?.color ?? sf2DefaultColours[(index % sf2DefaultColours.length)],
-        fontWeight: index === _userInstrumentIndex ? 700 : 400
+        fontWeight: index === _userInstrumentIndex ? 700 : 400,
+        color: "#111827"
       }}
       onClick={(e: MouseEvent) => {
         setUserInstrumentIndex(index);
@@ -413,7 +419,7 @@ export function UserInstrumentsHeader() {
           />
           <div onClick={onTryDeleteInstrument}
             style={{
-              border: '1px solid black',
+              border: '1px solid var(--border)',
               cursor: _userInstruments.length > 1 ? 'pointer' : 'unset',
               position: 'relative',
               width: 20,
